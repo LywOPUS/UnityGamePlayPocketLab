@@ -2018,6 +2018,11 @@ Prefab:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 114762037208006246, guid: 654a3b6a1affd1a4493989121ee7471f,
+        type: 2}
+      propertyPath: fireMode
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 654a3b6a1affd1a4493989121ee7471f, type: 2}
   m_IsPrefabParent: 0
