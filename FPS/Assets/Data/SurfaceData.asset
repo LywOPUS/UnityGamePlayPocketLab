@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d02eab95da0337545b255d8a61eb46f8, type: 3}
+  m_Name: SurfaceData
+  m_EditorClassIdentifier: 
+  defaultSurface:
+    name: 
+    footstepSounds:
+      sounds: []
+      volumeRange: {x: 0.5, y: 0.75}
+      pitchRange: {x: 0.9, y: 1.1}
+    jumpSounds:
+      sounds: []
+      volumeRange: {x: 0.5, y: 0.75}
+      pitchRange: {x: 0.9, y: 1.1}
+    landSounds:
+      sounds: []
+      volumeRange: {x: 0.5, y: 0.75}
+      pitchRange: {x: 0.9, y: 1.1}
+    bulletImpactSounds:
+      sounds: []
+      volumeRange: {x: 0.5, y: 0.75}
+      pitchRange: {x: 0.9, y: 1.1}
+    chopSounds:
+      sounds: []
+      volumeRange: {x: 0.5, y: 0.75}
+      pitchRange: {x: 0.9, y: 1.1}
+    hitSounds:
+      sounds: []
+      volumeRange: {x: 0.5, y: 0.75}
+      pitchRange: {x: 0.9, y: 1.1}
+  surfaces: []
