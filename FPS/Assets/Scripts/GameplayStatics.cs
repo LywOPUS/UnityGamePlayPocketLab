@@ -5,6 +5,19 @@ using UnityEngine;
 
 public class GameplayStatics : MonoBehaviour
 {
+    #region lyw
+    private static GunState gun;
+    public static GunState LocalRoscoeGun
+    {
+        get
+        {
+            if (gun == null)
+                gun = FindObjectOfType<GunState>();
+            return gun;
+
+        }
+    }
+    #endregion
 
     public static PlayerState LocalPlayer
     {

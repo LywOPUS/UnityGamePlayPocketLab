@@ -5,6 +5,12 @@ using UnityEngine;
 
 public class HitscanWeapon : WeaponBehaviour
 {
+    #region my
+    GunState gunState;
+
+    private Value<int> L_GunClip;
+    #endregion
+
     public enum FireMode
     {
         //半自动
@@ -59,6 +65,7 @@ public class HitscanWeapon : WeaponBehaviour
     [SerializeField]
     private float shotDuration = 0.22f;
 
+
     public override bool AttackOnceHandle(Camera camera)
     {
         if (Time.time < nextTimeCanFire || !IsEquiped)
@@ -82,17 +89,43 @@ public class HitscanWeapon : WeaponBehaviour
 
     protected void Shoot(Camera camera)
     {
-        fireAudio.Play(SoundsPlayer.Selection.Randomly, audioSource, 1f);
 
-        if (muzzleFlash)
-            muzzleFlash.Play(true);
+        if (gunState.isBlank.Do())
+        {
 
-        for (int i = 0; i < rayCount; i++)
-            DoHitscan(camera);
+            fireAudio.Play(SoundsPlayer.Selection.Randomly, audioSource, 1f);
 
-        Attack.Send();
+            if (muzzleFlash)
+                muzzleFlash.Play(true);
+
+            for (int i = 0; i < rayCount; i++)
+                DoHitscan(camera);
+
+            Attack.Send();
+
+        }
 
     }
+
+    //lyw
+
+    bool CanShoot()
+    {
+        if (gunState.gunClip.Get() != 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+
+    protected void ShootingNumber()
+    {
+        int currentNumber = gunState.gunClip.Get() - 1;
+        gunState.gunClip.Set(currentNumber);
+
+
+    }//end
 
     protected void DoHitscan(Camera camera)
     {
@@ -136,7 +169,14 @@ public class HitscanWeapon : WeaponBehaviour
 
     private void Start()
     {
+        //lyw
+        gunState = FindObjectOfType<GunState>();
+        L_GunClip = gunState.gunClip;
 
+        gunState.isBlank.SetHandle(CanShoot);
+        gunState.isBlank.AddListener(ShootingNumber);
+        GameplayStatics.LocalPlayer.ammo.Set(7);
+        //end
         if (fireMode == FireMode.SemiAuto)
             timeBetweenShotsMin = shotDuration;
         else

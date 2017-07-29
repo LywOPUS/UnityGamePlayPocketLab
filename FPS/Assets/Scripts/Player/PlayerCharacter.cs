@@ -52,8 +52,11 @@ public class PlayerCharacter : PlayerBehaviour
 
 
         Player.attackOnce.SetHandle(() => OnAttack(false));
-
+        
         Player.attackContinuously.SetHandle(() => OnAttack(true));
+
+        Player.reload.SetHandle(() => OnAttack(false));
+
 
         EquipWeapon(equippedWeapon);
 
@@ -226,4 +229,5 @@ public class PlayerCharacter : PlayerBehaviour
             NewWeapon.OnEquip();
         }
     }
+
 }

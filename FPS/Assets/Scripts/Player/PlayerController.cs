@@ -3,10 +3,16 @@ using UnityEngine;
 
 public class PlayerController : PlayerBehaviour
 {
+    //lyw
+    GunState gunstate;
+    //
     private InputManager inputManager;
 
     private void Awake()
     {
+        //
+        gunstate = FindObjectOfType<GunState>(); 
+        //
         if (!GameplayStatics.InputManager)
         {
             enabled = false;
@@ -37,6 +43,21 @@ public class PlayerController : PlayerBehaviour
 
             if (inputManager.GetButtonDown("Attack"))
                 Player.attackOnce.Do();
+
+
+            // PickUp
+            if (Input.GetKeyDown("r"))
+            {
+                if (Player.ammo.Get()!=0&&(gunstate.gunClip.Get()!=GunState.maxGunClip))
+                {
+                    int dClip = GunState.maxGunClip - gunstate.gunClip.Get();
+                    Player.ammo.Set(Player.ammo.Get() - dClip);
+
+                    gunstate.gunClip.Set(gunstate.gunClip.Get()+dClip);
+                }
+                
+            }
+            
         }
         else
         {

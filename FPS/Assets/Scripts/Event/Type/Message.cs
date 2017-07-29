@@ -17,7 +17,7 @@ public class Message
         listeners -= listener;
     }
 
-    public void Send()
+    public void Send() 
     {
         if (listeners != null)
             listeners();

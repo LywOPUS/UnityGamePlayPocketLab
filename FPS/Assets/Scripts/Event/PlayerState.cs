@@ -19,4 +19,11 @@ public class PlayerState : ActorState
 
     public Attempt attackContinuously = new Attempt();
 
+    #region Lyw
+    public Value<int> ammo = new Value<int>(30);
+
+    public Attempt reload = new Attempt();
+
+    
+    #endregion
 }
