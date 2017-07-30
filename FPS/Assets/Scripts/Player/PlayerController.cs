@@ -45,7 +45,7 @@ public class PlayerController : PlayerBehaviour
                 Player.attackOnce.Do();
 
 
-            // PickUp
+            // Magaine
             if (Input.GetKeyDown("r"))
             {
                 if (Player.ammo.Get()!=0&&(gunstate.gunClip.Get()!=GunState.maxGunClip))

@@ -86,6 +86,8 @@ public class PlayerCamera : PlayerBehaviour
             LookAround();
 
         Player.viewLocked.Set(Cursor.lockState != CursorLockMode.Locked);
+
+        DetectM();
     }
 
 
@@ -148,4 +150,19 @@ public class PlayerCamera : PlayerBehaviour
         averageTotal = Mathf.Max(1f, averageTotal);
         currentMouseLook = average / averageTotal;
     }
+
+
+    //LYW 射出一条检测视野中心的射线
+    Ray detectRay_M = Camera.main.ScreenPointToRay(new Vector3(Screen.width/2, Screen.height/2 , 0));
+    
+    //检测屏幕中心中心
+    void DetectM()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(detectRay_M,out hit,100f,9))
+        {
+            print("Hit Ammo");
+        }
+    }
+    //endFunc
 }
