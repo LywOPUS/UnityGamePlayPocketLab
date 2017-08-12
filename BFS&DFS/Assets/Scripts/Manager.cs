@@ -20,7 +20,7 @@ public class Manager : MonoBehaviour
         right,
     }
 
-    //生成新的路径地图
+    //生成搜寻地图信息
     private void New_PMap()
     {
         for (int i = 0; i < FMap.MapWidth; i++)
@@ -47,127 +47,161 @@ public class Manager : MonoBehaviour
     /// <param name="path"></param>
     /// <param name="pathdir"></param>
     /// <returns></returns>
-    private PathData S_PMap(PathData path, PATHDIR pathdir)
-    {
-        PathData temp = new PathData(path.pos[0], path.pos[1]);
-        switch (pathdir)
-        {
-            case PATHDIR.up:
-                if (temp.pos[0] < FMap.MapHight)
-                {
-                    temp.pos[0] += 1;
-                }
-                else
-                {
-                    return null;
-                }
+    //private PathData S_PMap(PathData path, PATHDIR pathdir)
+    //{
+    //    PathData temp = new PathData(path.pos[0], path.pos[1]);
+    //    switch (pathdir)
+    //    {
+    //        case PATHDIR.up:
+    //            if (temp.pos[0] < FMap.MapHight)
+    //            {
+    //                temp.pos[0] += 1;
+    //            }
+    //            else
+    //            {
+    //                return null;
+    //            }
 
-                break;
+    //            break;
 
-            case PATHDIR.down:
-                if (temp.pos[0] > 0)
-                {
-                    temp.pos[0] -= 1;
-                }
-                else
-                {
-                    return null;
-                }
-                break;
+    //        case PATHDIR.down:
+    //            if (temp.pos[0] > 0)
+    //            {
+    //                temp.pos[0] -= 1;
+    //            }
+    //            else
+    //            {
+    //                return null;
+    //            }
+    //            break;
 
-            case PATHDIR.left:
-                if (temp.pos[1] > 0)
-                {
-                    temp.pos[1] -= 1;
-                }
-                else
-                {
-                    return null;
-                }
-                break;
+    //        case PATHDIR.left:
+    //            if (temp.pos[1] > 0)
+    //            {
+    //                temp.pos[1] -= 1;
+    //            }
+    //            else
+    //            {
+    //                return null;
+    //            }
+    //            break;
 
-            case PATHDIR.right:
-                if (temp.pos[1] < FMap.MapWidth)
-                {
-                    temp.pos[1] += 1;
-                }
-                else
-                {
-                    return null;
-                }
-                break;
+    //        case PATHDIR.right:
+    //            if (temp.pos[1] < FMap.MapWidth)
+    //            {
+    //                temp.pos[1] += 1;
+    //            }
+    //            else
+    //            {
+    //                return null;
+    //            }
+    //            break;
 
-            default:
-                break;
-        }
+    //        default:
+    //            break;
+    //    }
 
-        return temp;
-    }
+    //    return temp;
+    //}
 
     /// <summary>
     /// 寻路任务
     /// </summary>
     /// <param name="path"></param>
-    private void Task(PathData path)
+    //private void Task(PathData path)
+    //{
+    //    path.isFind = true;
+    //    if (path.isFind == false)
+    //    {
+    //        PathData up = S_PMap(path, PATHDIR.up);
+    //        PathData down = S_PMap(path, PATHDIR.down);
+    //        PathData left = S_PMap(path, PATHDIR.left);
+    //        PathData right = S_PMap(path, PATHDIR.right);
+    //    }
+    //    else
+    //    {
+    //        Debug.Log("找过了");
+    //    }
+    //}
+
+    public bool Canqueue(int[] pos)
     {
-        path.isFind = true;
-        if (path.isFind == false)
+        if (pos[0] > 0 || pos[0] < FMap.MapHight - 1 || pos[1] > 0 || pos[1] < FMap.MapWidth - 1)
         {
-            PathData up = S_PMap(path, PATHDIR.up);
-            PathData down = S_PMap(path, PATHDIR.down);
-            PathData left = S_PMap(path, PATHDIR.left);
-            PathData right = S_PMap(path, PATHDIR.right);
-            taskQue.Enqueue(FindPath(up, path));
-            taskQue.Enqueue(FindPath(down, path));
-            taskQue.Enqueue(FindPath(left, path));
-            taskQue.Enqueue(FindPath(right, path));
+            return true;
         }
-        else
+        if (FMap.Map[pos[0], pos[1]] != 1 && PMap[pos[0], pos[1]].step < 1)
         {
-            Debug.Log("找过了");
+            PMap[pos[0], pos[1]].step += 1;
+
+            PMap[pos[0], pos[1]].path = Instantiate(test, new Vector2(pos[1], pos[0]), Quaternion.identity);
+            return true;
         }
+
+        return false;
     }
 
-    private PathData FindPath(PathData nextPath, PathData curruntPath)
-    {
-        if (PMap[nextPath.pos[0], nextPath.pos[1]].step < 1 && PMap[nextPath.pos[0], nextPath.pos[1]].isFind == false)
-        {
-            Instantiate(test, new Vector2(nextPath.pos[1], nextPath.pos[0]), Quaternion.identity);
+    private Queue<PathData> findqueue = new Queue<PathData>();
 
-            return nextPath;
-        }
-        else return null;
-    }
-
-    private IEnumerator PathFinding()
+    public void Finding()
     {
-        Debug.Log("pahtfinding");
-        Task(PMap[1, 1]);
-        List<PathData> pathLink = new List<PathData>();
-        PathData tempData = PMap[1, 1];
-        taskQue.Enqueue(PMap[1, 1]);
-        while (taskQue != null)
+        Queue<PathData[]> tampList = new Queue<PathData[]>();
+        foreach (var item in findqueue)
         {
-            Debug.Log(taskQue.Count);
-            taskQue.Dequeue();
-            pathLink.Add(PMap[taskQue.Peek().pos[0], taskQue.Peek().pos[1]]);
-            yield return 0;
-            foreach (var item in pathLink)
+            if (item == PMap[18, 1])
             {
-                if (item != null && item.step < 3)
+                Debug.Log("you finded");
+                PathData currnt = item;
+
+                Debug.Log(currnt.pos[0] + currnt.pos[1]);
+                while (currnt.pre != null)
                 {
-                    Task(item);
-                    if (item.tag == 1)
-                    {
-                        Debug.Log("你找到了");
-                    }
+                    currnt.path.GetComponent<Renderer>().material.color = Color.clear;
+                    PMap[currnt.pos[0], currnt.pos[1]].path.GetComponent <>
+                    currnt = currnt.pre;
                 }
+                break;
             }
-            pathLink.Clear();
+            tampList.Enqueue(FindQueue(item.pos).ToArray());
         }
+        findqueue.Dequeue();
+        findqueue.Enqueue(tampList.ToArray());
     }
 
-    private Queue<PathData> taskQue = new Queue<PathData>();
+    public Queue<PathData> FindQueue(int[] pos)
+    {
+        Queue<PathData> tempqueue = new Queue<PathData>();
+        if (Canqueue(new int[] { pos[0] + 1, pos[1] }))
+        {
+            tempqueue.Enqueue(PMap[pos[0] + 1, pos[1]]);
+        }
+        if (Canqueue(new int[] { pos[0] - 1, pos[1] }))
+        {
+            tempqueue.Enqueue(PMap[pos[0] - 1, pos[1]]);
+        }
+        if (Canqueue(new int[] { pos[0], pos[1] + 1 }))
+        {
+            tempqueue.Enqueue(PMap[pos[0], pos[1] + 1]);
+        }
+        if (Canqueue(new int[] { pos[0], pos[1] - 1 }))
+        {
+            tempqueue.Enqueue(PMap[pos[0], pos[1] - 1]);
+        }
+        return tempqueue;
+    }
+
+    //private PathData FindPath(PathData nextPath, PathData curruntPath)
+    //{
+    //    if (PMap[nextPath.pos[0], nextPath.pos[1]].step < 1 && PMap[nextPath.pos[0], nextPath.pos[1]].isFind == false)
+    //    {
+    //        Instantiate(test, new Vector2(nextPath.pos[1], nextPath.pos[0]), Quaternion.identity);
+
+    //        return nextPath;
+    //    }
+    //    else return null;
+    //}
+
+    private Queue<List<PathData>> taskQue = new Queue<List<PathData>>();
 
     private void Start()
     {
@@ -185,8 +219,6 @@ public class Manager : MonoBehaviour
                 Instantiate(floor, new Vector2(item.pos[1], item.pos[0]), Quaternion.identity);
             }
         }
-
-        StartCoroutine(PathFinding());
     }
 
     private void Update()

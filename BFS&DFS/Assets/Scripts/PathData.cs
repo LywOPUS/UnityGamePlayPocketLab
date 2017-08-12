@@ -23,6 +23,6 @@ public class PathData
         this.pos = new int[] { y, x };
     }
 
+    public GameObject path;
     public PathData pre;
-    public PathData next;
 }
