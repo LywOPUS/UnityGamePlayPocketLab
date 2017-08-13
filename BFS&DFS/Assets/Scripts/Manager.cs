@@ -86,7 +86,7 @@ public class Manager : MonoBehaviour
         PMap[1, 1].step = 1;
         while (FindPath.Count > 0)
         {
-            //Debug.Log(FindPath.Peek().pos[0] + FindPath.Peek().pos[1]);
+            Debug.Log("y" + FindPath.Peek().pos[0] + "x" + FindPath.Peek().pos[1]);
             PathData currnt = FindPath.Dequeue();
             if (currnt == PMap[(int)targetPoint[1].transform.position.y, (int)targetPoint[1].transform.position.x])
             {
