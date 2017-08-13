@@ -10,6 +10,7 @@ internal class MapFile
     public int MapHight;
     private int[] MapSize;
     public int[,] Map;
+    public GameObject mapParent;
 
     public MapFile(int width, int hight)
     {
@@ -43,7 +44,7 @@ internal class MapFile
                 {
                     Map[j, i] = 1;
 
-                    UnityEngine.Object.Instantiate(wall, new Vector2(i, j), Quaternion.identity);
+                    UnityEngine.Object.Instantiate(wall, new Vector2(i, j), Quaternion.identity, mapParent.transform);
                 }
             }
 
