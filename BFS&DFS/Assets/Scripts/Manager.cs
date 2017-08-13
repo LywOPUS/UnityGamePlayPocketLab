@@ -44,7 +44,7 @@ public class Manager : MonoBehaviour
     {
         if ((pos[0] > 0 && pos[0] < FMap.MapHight - 1) && (pos[1] > 0 || pos[1] < FMap.MapWidth - 1))
         {
-            if (FMap.Map[pos[0], pos[1]] != 1 && PMap[pos[0], pos[1]].step < 2)
+            if (FMap.Map[pos[0], pos[1]] != 1 && PMap[pos[0], pos[1]].step < 1)
             {
                 PMap[pos[0], pos[1]].step += 1;
 
@@ -86,18 +86,20 @@ public class Manager : MonoBehaviour
         PMap[1, 1].step = 1;
         while (FindPath.Count > 0)
         {
-            Debug.Log(FindPath.Peek().pos[0] + FindPath.Peek().pos[1]);
+            //Debug.Log(FindPath.Peek().pos[0] + FindPath.Peek().pos[1]);
             PathData currnt = FindPath.Dequeue();
             if (currnt == PMap[(int)targetPoint[1].transform.position.y, (int)targetPoint[1].transform.position.x])
             {
                 Debug.Log("YOU FIND!!!!!!!!");
-                //while (PMap[currnt.pos[0], currnt.pos[1]].step < 2)
-                //{
-                //    currnt.pathGO.GetComponent<Renderer>().material.color = Color.yellow;
-                //    PMap[currnt.pos[0], currnt.pos[1]].pathGO.GetComponent<Renderer>().material.color = Color.yellow;
-                //    currnt = currnt.pre;
-                //}
-                //break;
+                while (PMap[currnt.pos[0], currnt.pos[1]].pre != null)
+                {
+                    currnt.pathGO.GetComponent<Renderer>().material.color = Color.yellow;
+                    Debug.Log(PMap[currnt.pos[0], currnt.pos[1]].step);
+                    PMap[currnt.pos[0], currnt.pos[1]].pathGO.GetComponent<SpriteRenderer>().color = Color.yellow;
+                    currnt = currnt.pre;
+                    yield return new WaitForSeconds(0.1f);
+                }
+                break;
             }
             yield return 0;
             FindQueue(currnt.pos, FindPath);
