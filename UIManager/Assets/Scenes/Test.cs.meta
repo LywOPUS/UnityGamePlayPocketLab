@@ -1,10 +1,14 @@
 fileFormatVersion: 2
 guid: c317ec6c337fc6342aafdd3619727be4
-timeCreated: 1502711142
+timeCreated: 1502728689
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - Com_Item: {fileID: 1918281675223300, guid: 729fa062323eef242bf75b626419281c, type: 2}
+  - rectTran: {instanceID: 0}
+  - Btn_AddItem: {instanceID: 0}
+  - grid: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
