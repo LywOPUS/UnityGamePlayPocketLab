@@ -1,0 +1,11 @@
+# Unity资源加载和目录结构
+
+- unity查找物体
+
+    `GO =  gameObject.Find（“/”）`
+
+    根据节点关系查找物体，但是需要一个根节点
+
+    `GO = gemeObject.FindWhithType()`
+    
+    `GO = gameObject.FindWhithTage()`

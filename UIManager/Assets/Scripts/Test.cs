@@ -15,7 +15,7 @@ public class Test : MonoBehaviour
 
     public int currentItemNum;
 
-    void Start()
+    private void Start()
     {
         Btn_AddItem.onClick.AddListener(AddItem);
         Com_Item = Resources.Load("assetsbundles/ui/Com_Item") as GameObject;
