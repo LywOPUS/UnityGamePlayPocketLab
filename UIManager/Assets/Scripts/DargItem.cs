@@ -9,21 +9,18 @@ public class DargItem : MonoBehaviour, IPointerUpHandler, IDragHandler, IPointer
 {
     private GameObject item;
     private Vector3 initPos;
-    private bool isPass;
     private bool isClick;
 
     private void Awake()
     {
+        // Debug.Log(DargParent.gameObject.name);
+
         item = this.gameObject;
         initPos = item.transform.localPosition;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (isPass)
-        {
-            return;
-        }
         if (item != null)
         {
             gameObject.transform.position = eventData.position;
@@ -36,12 +33,14 @@ public class DargItem : MonoBehaviour, IPointerUpHandler, IDragHandler, IPointer
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (eventData.pointerCurrentRaycast.gameObject != null && eventData.pointerCurrentRaycast.gameObject.name == "Desthory")
+        if (eventData.pointerCurrentRaycast.gameObject != null && eventData.pointerCurrentRaycast.gameObject.name == "Destroy")
         {
-            Destroy(this.gameObject);
+            Destroy(this.gameObject.transform.parent.gameObject);
         }
-
-        gameObject.transform.localPosition = initPos;
+        else
+        {
+            gameObject.transform.localPosition = initPos;
+        }
     }
 
     private void OnDestroy()
@@ -51,8 +50,6 @@ public class DargItem : MonoBehaviour, IPointerUpHandler, IDragHandler, IPointer
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        isClick = true;
-
-        isClick = false;
+        Debug.Log(eventData.pointerCurrentRaycast.gameObject.name);
     }
 }

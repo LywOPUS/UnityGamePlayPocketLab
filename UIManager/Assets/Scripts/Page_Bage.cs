@@ -38,6 +38,7 @@ public class Page_Bag : MonoBehaviour
     private void OnAddItemClick()
     {
         GameObject item = GameObject.Instantiate(this.item) as GameObject;
+
         if (item == null)
         {
             Debug.Log("item is null");
@@ -46,6 +47,8 @@ public class Page_Bag : MonoBehaviour
         {
             Debug.Log("rect isn't null");
             item.gameObject.transform.SetParent(rect);
+            Transform trans = item.transform.Find("Transform_darg");
+            trans.gameObject.AddComponent<DargItem>();
         }
         else
         {
