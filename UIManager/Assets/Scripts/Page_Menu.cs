@@ -20,7 +20,6 @@ public class Page_Menu : MonoBehaviour
 
     private void LunchBagPack()
     {
-        GameObject pag = UIManager.instance.CreatPage_UI("Page_Bag");
-        pag.AddComponent<Page_Bag>();
+        Page_Bag pag = UIManager.instance.CreatPage_UI<Page_Bag>();
     }
 }

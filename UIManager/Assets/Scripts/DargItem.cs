@@ -5,23 +5,37 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
 
-public class DargItem : MonoBehaviour, IPointerUpHandler, IDragHandler, IPointerClickHandler
+public class DargItem : MonoBehaviour, IPointerUpHandler, IDragHandler, IPointerClickHandler, IBeginDragHandler
 {
     private GameObject item;
     private Vector3 initPos;
-    private bool isClick;
+    private Transform currentParent;
+    public Transform Destory;
+    public Transform DestoryCurrentParent;
 
-    private void Awake()
+    private void Start()
     {
         // Debug.Log(DargParent.gameObject.name);
+        Destory = UIManager.instance.GetUiPage<Page_Bag>().transform.Find("Canvas/Destroy");
 
-        item = this.gameObject;
-        initPos = item.transform.localPosition;
+        if (Destory == null)
+        {
+            Debug.Log("Can't find Destoty");
+        }
+        DestoryCurrentParent = Destory.parent.transform;
+        currentParent = this.gameObject.transform.parent;
+        initPos = this.transform.localPosition;
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        currentParent.SetParent(UIManager.instance.GetUiPage<Page_Bag>().transPage);
+        Destory.SetParent(UIManager.instance.GetUiPage<Page_Bag>().transPage);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (item != null)
+        if (this.gameObject != null)
         {
             gameObject.transform.position = eventData.position;
         }
@@ -35,12 +49,17 @@ public class DargItem : MonoBehaviour, IPointerUpHandler, IDragHandler, IPointer
     {
         if (eventData.pointerCurrentRaycast.gameObject != null && eventData.pointerCurrentRaycast.gameObject.name == "Destroy")
         {
-            Destroy(this.gameObject.transform.parent.gameObject);
+            //  currentParent.SetParent(UIManager.instance.GetUiPage<Page_Bag>().rect);
+            Destroy(currentParent.gameObject);
         }
         else
         {
+            Debug.Log("Can't Find Destroy");
+            currentParent.SetParent(UIManager.instance.GetUiPage<Page_Bag>().rect);
             gameObject.transform.localPosition = initPos;
+            // gameObject.transform.localPosition = initPos;
         }
+        Destory.SetParent(DestoryCurrentParent);
     }
 
     private void OnDestroy()

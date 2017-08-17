@@ -8,27 +8,28 @@ using System;
 public class Page_Bag : MonoBehaviour
 {
     [SerializeField]
-    private RectTransform rect;
+    public RectTransform rect;
 
-    [SerializeField]
-    private ScrollRect scrollRect;
+    public Transform transPage;
 
     [SerializeField]
     private Button[] buttonArray;
-
-    [SerializeField]
-    private GameObject item;
 
     [SerializeField]
     private GridLayoutGroup grid;
 
     private int currentItemNum;
 
-    private void Awake()
+    private void Start()
     {
+        transPage = this.gameObject.transform.Find("Canvas/TransPage");
+        if (transPage == null)
+        {
+            Debug.Log("Can't find transPage");
+        }
         rect = this.gameObject.transform.Find("Canvas/Scroll View/Viewport/Content").GetComponent<RectTransform>();
         grid = rect.GetComponent<GridLayoutGroup>();
-        item = Resources.Load("assetsbundles/ui/Com_Item") as GameObject;
+        // item = Resources.Load("assetsbundles/ui/Com_Item") as GameObject;
 
         buttonArray = this.gameObject.transform.Find("Canvas/Buttons/").GetComponentsInChildren<Button>();
         buttonArray[0].onClick.AddListener(OnAddItemClick);
@@ -37,8 +38,8 @@ public class Page_Bag : MonoBehaviour
 
     private void OnAddItemClick()
     {
-        GameObject item = GameObject.Instantiate(this.item) as GameObject;
-
+        // GameObject item = GameObject.Instantiate(this.item) as GameObject;
+        Com_Item item = UIManager.instance.CreatCom_item<Com_Item>(rect);
         if (item == null)
         {
             Debug.Log("item is null");
@@ -60,7 +61,7 @@ public class Page_Bag : MonoBehaviour
 
     private void OnExitClick()
     {
-        Destroy(this.gameObject);
+        UIManager.instance.ClosePage("Page_Bag");
     }
 
     private void ChangeRectHight()
