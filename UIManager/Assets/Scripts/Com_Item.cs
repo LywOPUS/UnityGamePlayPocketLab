@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Com_Item : MonoBehaviour
+public class Com_Item : UIBase
 {
     public Transform Transform_Darg;
 

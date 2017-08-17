@@ -9,7 +9,7 @@ public class UIManager : MonoBehaviour
 
     public GameObject UIRoot;
 
-    private Dictionary<string, MonoBehaviour> uiPage = new Dictionary<string, MonoBehaviour>();
+    private Dictionary<string, UIBase> uiPage = new Dictionary<string, UIBase>();
 
     public T GetUiPage<T>() where T : MonoBehaviour
     {
@@ -17,7 +17,7 @@ public class UIManager : MonoBehaviour
         return uiPage[rName] as T;
     }
 
-    public T CreatPage_UI<T>() where T : MonoBehaviour
+    public T CreatPage_UI<T>() where T : UIBase
     {
         Debug.Log(typeof(T).ToString());
         string rName = typeof(T).ToString();
@@ -28,7 +28,7 @@ public class UIManager : MonoBehaviour
             Pui.gameObject.transform.SetParent(UIRoot.transform);
             T pageScript = Pui.AddComponent<T>();
             uiPage.Add(rName, pageScript);
-            return rName as T;
+            return pageScript as T;
         }
         else
         {
@@ -37,7 +37,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public T CreatCom_item<T>(Transform rParent) where T : MonoBehaviour
+    public T CreatCom_item<T>(Transform rParent) where T : UIBase
     {
         Debug.Log("ComItem: " + typeof(T).ToString());
         string rName = typeof(T).ToString();
@@ -50,10 +50,11 @@ public class UIManager : MonoBehaviour
         return script;
     }
 
-    public void ClosePage(string name)
+    public void ClosePage<T>()
     {
-        Destroy(uiPage[name]);
-        uiPage.Remove(name);
+        string rName = typeof(T).Name;
+        Destroy(uiPage[rName].gameObject);
+        uiPage.Remove(rName);
     }
 
     private void Init()

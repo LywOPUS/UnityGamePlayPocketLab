@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
 
-public class Page_Bag : MonoBehaviour
+public class Page_Bag : UIBase
 {
     [SerializeField]
     public RectTransform rect;
@@ -29,11 +29,11 @@ public class Page_Bag : MonoBehaviour
         }
         rect = this.gameObject.transform.Find("Canvas/Scroll View/Viewport/Content").GetComponent<RectTransform>();
         grid = rect.GetComponent<GridLayoutGroup>();
-        // item = Resources.Load("assetsbundles/ui/Com_Item") as GameObject;
 
         buttonArray = this.gameObject.transform.Find("Canvas/Buttons/").GetComponentsInChildren<Button>();
-        buttonArray[0].onClick.AddListener(OnAddItemClick);
-        buttonArray[1].onClick.AddListener(OnExitClick);
+
+        SetEventTrigger(buttonArray[0].gameObject).onClick = OnAddItemClick;
+        SetEventTrigger(buttonArray[1].gameObject).onClick = OnExitClick;
     }
 
     private void OnAddItemClick()
@@ -61,7 +61,7 @@ public class Page_Bag : MonoBehaviour
 
     private void OnExitClick()
     {
-        UIManager.instance.ClosePage("Page_Bag");
+        UIManager.instance.ClosePage<Page_Bag>();
     }
 
     private void ChangeRectHight()

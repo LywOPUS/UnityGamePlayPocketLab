@@ -5,9 +5,8 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
 
-public class DargItem : MonoBehaviour, IPointerUpHandler, IDragHandler, IPointerClickHandler, IBeginDragHandler
+public class DargItem : UIBase
 {
-    private GameObject item;
     private Vector3 initPos;
     private Transform currentParent;
     public Transform Destory;
@@ -15,13 +14,15 @@ public class DargItem : MonoBehaviour, IPointerUpHandler, IDragHandler, IPointer
 
     private void Start()
     {
-        // Debug.Log(DargParent.gameObject.name);
         Destory = UIManager.instance.GetUiPage<Page_Bag>().transform.Find("Canvas/Destroy");
-
         if (Destory == null)
         {
             Debug.Log("Can't find Destoty");
         }
+
+        SetEventTrigger(this.gameObject).onBeginDrag = OnBeginDrag;
+        SetEventTrigger(this.gameObject).onPointerUp = OnPointerUp;
+        SetEventTrigger(this.gameObject).onDrag += OnDrag;
         DestoryCurrentParent = Destory.parent.transform;
         currentParent = this.gameObject.transform.parent;
         initPos = this.transform.localPosition;
