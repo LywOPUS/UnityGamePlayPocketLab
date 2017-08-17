@@ -9,6 +9,8 @@ public class UIManager : MonoBehaviour
 
     public GameObject UIRoot;
 
+	private Dictionary<string,GameObject> UIList = new Dictionary<string, GameObject> ();
+
     public GameObject CreatPage_UI(string rName)
     {
         GameObject PUi = Resources.Load<GameObject>("assetsbundles/ui/" + rName);
