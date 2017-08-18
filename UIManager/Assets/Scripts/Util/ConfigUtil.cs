@@ -23,12 +23,18 @@ public class ConfigUtil : MonoBehaviour
     {
         Instance = this;
     }
+
     public void Init()
     {
-        bagConfig
+        bagConfig = Load<configBagData>();
     }
 
-    Dictionary<string, T> load<T>() where T : class
+    /// <summary>
+    /// 导入数据
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    private Dictionary<string, T> Load<T>() where T : class
     {
         string rSheeName = typeof(T).Name;
 
@@ -46,6 +52,35 @@ public class ConfigUtil : MonoBehaviour
         else
         {
             TextAsset textAsset = Resources.Load<TextAsset>("assetsbundles/data/sheet/" + rSheeName);
+            if (textAsset == null)
+            {
+                Debug.LogError(rSheeName + "未找到");
+                return null;
+            }
+            str = textAsset.text;
         }
+
+        Dictionary<string, T> data = JsonMapper.ToObject<Dictionary<string, T>>(str);
+
+        return data;
+    }
+
+    public void ExportToJson<T>(Dictionary<string, T> rData) where T : class
+    {
+        string rSheetName = typeof(T).Name;
+
+        string outFilePath = Application.persistentDataPath + "/data/" + rSheetName + ".txt";
+
+        string jsonText = JsonMapper.ToJson(rData);
+
+        Debug.Log(outFilePath);
+        FileStream fs = new FileStream(outFilePath, FileMode.Create);
+
+        byte[] data = System.Text.Encoding.UTF8.GetBytes(jsonText);
+
+        fs.Write(data, 0, data.Length);
+
+        fs.Flush();
+        fs.Close();
     }
 }
