@@ -7,5 +7,26 @@
     根据节点关系查找物体，但是需要一个根节点
 
     `GO = gemeObject.FindWhithType()`
-    
+
     `GO = gameObject.FindWhithTage()`
+
+
+
+    特殊文件夹
+     Resources
+     Editor
+
+     Art
+
+     Scripts
+
+
+
+     一直存在在内存中的静态对象，单例。
+
+
+
+     uiManager是一个静态的，在场景中管理，增加脚本，
+
+
+      - Awake 实在代码创建时执行的

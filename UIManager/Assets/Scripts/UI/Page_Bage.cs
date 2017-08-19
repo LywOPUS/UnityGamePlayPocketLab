@@ -61,7 +61,7 @@ public class Page_Bag : UIBase
 
     private void OnExitClick()
     {
-        UIManager.instance.ClosePage<Page_Bag>();
+        UIManager.instance.ClosePageUI<Page_Bag>();
     }
 
     private void ChangeRectHight()

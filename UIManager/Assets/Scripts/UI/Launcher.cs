@@ -9,7 +9,32 @@ public class Launcher : MonoBehaviour
         GameObject manager = new GameObject("manager");
         manager.AddComponent<UIManager>();
         DontDestroyOnLoad(manager);
-        Page_Menu menu = UIManager.instance.CreatPage_UI<Page_Menu>();
         Debug.Log(UIManager.instance.GetUiPage<Page_Menu>());
+    }
+
+    /// <summary>
+    /// 注册管理器
+    /// </summary>
+    public void RegistManager()
+    {
+    }
+
+    /// <summary>
+    /// 预先加载好资源
+    /// </summary>
+    public void PreLoadRes()
+    {
+    }
+
+    /// <summary>
+    /// 进入游戏
+    /// </summary>
+    public void EnterGame()
+    {
+    }
+
+    private void CreatBgUI()
+    {
+        UIManager.instance.CreatPage_UI<Page_Menu>();
     }
 }
