@@ -10,23 +10,46 @@ public class UIManager : MonoBehaviour
     private Dictionary<string, UIBase> uiPageDict = new Dictionary<string, UIBase>();
 
     /// <summary>
-    ///获取ui界面
+    /// 关闭
     /// </summary>
-    public T GetUiPage<T>() where T : MonoBehaviour
+    public void ClosePageUI<T>()
     {
-        string rName = typeof(T).ToString();
-        if (!uiPageDict.ContainsKey(rName))
-        {
-            Debug.LogError("当前UI未加载" + rName);
-            return null;
-        }
-        return uiPageDict[rName] as T;
+        string rName = typeof(T).Name;
+
+        Destroy(uiPageDict[rName].gameObject);
+        uiPageDict.Remove(rName);
     }
 
     /// <summary>
-    /// 实例化一个UI界面
+    /// 创建一个物品UI
     /// </summary>
-    public T CreatPage_UI<T>() where T : UIBase
+    public T CreatComUI<T>(Transform rParent) where T : UIBase
+    {
+        string rName = typeof(T).ToString();
+        GameObject UiGoItem = Resources.Load<GameObject>("assetsbundles/ui/" + rName);
+
+        if (UiGoItem == null)
+        {
+            Debug.Log(rName + "资源不存在");
+            return null;
+        }
+
+        //实例化
+        UiGoItem = GameObject.Instantiate(UiGoItem, rParent);
+        UiGoItem.name = rName;
+        UiGoItem.gameObject.transform.localScale = Vector3.one;
+
+        Debug.Log("创建了: " + typeof(T).ToString() + "视图");
+
+        T script = UiGoItem.AddComponent<T>();
+
+        return script;
+    }
+
+    /// <summary>
+    /// 创建并实例化一个UI界面
+    /// </summary>
+    public T CreatPageUI<T>() where T : UIBase
     {
         string rName = typeof(T).ToString();
         GameObject UiGoPage = Resources.Load<GameObject>("assetsbundles/ui/" + rName);
@@ -52,37 +75,23 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 创建一个物品UI
+    ///获取ui界面
     /// </summary>
-    public T CreatCom_item<T>(Transform rParent) where T : UIBase
+    public T GetPageUI<T>() where T : MonoBehaviour
     {
         string rName = typeof(T).ToString();
-        GameObject UiGoItem = Resources.Load<GameObject>("assetsbundles/ui/" + rName);
-
-        if (UiGoItem == null)
+        if (!uiPageDict.ContainsKey(rName))
         {
-            Debug.Log(rName + "资源不存在");
+            Debug.LogError("当前UI未加载" + rName);
             return null;
         }
-
-        //实例化
-        UiGoItem = GameObject.Instantiate(UiGoItem, rParent);
-        UiGoItem.name = rName;
-        UiGoItem.gameObject.transform.localScale = Vector3.one;
-
-        Debug.Log("创建了: " + typeof(T).ToString() + "视图");
-
-        T script = UiGoItem.AddComponent<T>();
-
-        return script;
+        return uiPageDict[rName] as T;
     }
 
-    public void ClosePageUI<T>()
+    private void Awake()
     {
-        string rName = typeof(T).Name;
-
-        Destroy(uiPageDict[rName].gameObject);
-        uiPageDict.Remove(rName);
+        instance = this;
+        Init();
     }
 
     private void Init()
@@ -95,13 +104,5 @@ public class UIManager : MonoBehaviour
 
             DontDestroyOnLoad(UIRoot);
         }
-
-        Debug.Log("Can't find UIroot in 'Resources/local/systemres/'");
-    }
-
-    private void Awake()
-    {
-        instance = this;
-        Init();
     }
 }

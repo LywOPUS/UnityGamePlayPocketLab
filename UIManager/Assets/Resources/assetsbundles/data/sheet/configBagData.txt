@@ -1,0 +1,9 @@
+{
+    "0000":{"id":"0000","itemName":"空的物体","spriteName":"ui_icon_EmptyOb","count":"1"},
+    "0001":{"id":"0001","itemName":"红色物体","spriteName":"ui_icon_RedOb","count":"1"},
+    "0002":{"id":"0002","itemName":"蓝色物体","spriteName":"ui_icon_BlueOb","count":"1"}
+}
+    
+    
+
+

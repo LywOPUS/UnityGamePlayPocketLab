@@ -20,6 +20,6 @@ public class Page_Menu : UIBase
 
     private void LunchBagPack()
     {
-        UIManager.instance.CreatPage_UI<Page_Bag>();
+        UIManager.instance.CreatPageUI<Page_Bag>();
     }
 }

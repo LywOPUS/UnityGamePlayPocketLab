@@ -26,16 +26,25 @@ public class ConfigUtil : MonoBehaviour
 
     public void Init()
     {
+        Debug.Log("ConfigUtilInit\n\n");
         bagConfig = Load<configBagData>();
+
+        ExportToJson<configBagData>(bagConfig);
+        if (bagConfig != null)
+        {
+            Debug.Log("成功加载bagconfig");
+        }
     }
+
+    #region Jason流操作
 
     /// <summary>
     /// 导入数据
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
     private Dictionary<string, T> Load<T>() where T : class
+
     {
+        Debug.Log(Application.persistentDataPath);
         string rSheeName = typeof(T).Name;
 
         string readFilePath = Application.persistentDataPath + "/" + rSheeName + ".txt";
@@ -44,6 +53,8 @@ public class ConfigUtil : MonoBehaviour
 
         if (File.Exists(readFilePath))
         {
+            //Todo: 加载文件
+            Debug.Log(rSheeName + "找到了");
             StreamReader textData = File.OpenText(readFilePath);
             str = textData.ReadToEnd();
             textData.Close();
@@ -61,15 +72,19 @@ public class ConfigUtil : MonoBehaviour
         }
 
         Dictionary<string, T> data = JsonMapper.ToObject<Dictionary<string, T>>(str);
+        Debug.Log(data["0000"].ToString());
 
         return data;
     }
 
+    /// <summary>
+    /// 导出数据到Json
+    /// </summary>
     public void ExportToJson<T>(Dictionary<string, T> rData) where T : class
     {
         string rSheetName = typeof(T).Name;
 
-        string outFilePath = Application.persistentDataPath + "/data/" + rSheetName + ".txt";
+        string outFilePath = Application.persistentDataPath + "/" + rSheetName + ".txt";
 
         string jsonText = JsonMapper.ToJson(rData);
 
@@ -83,4 +98,6 @@ public class ConfigUtil : MonoBehaviour
         fs.Flush();
         fs.Close();
     }
+
+    #endregion Jason流操作
 }

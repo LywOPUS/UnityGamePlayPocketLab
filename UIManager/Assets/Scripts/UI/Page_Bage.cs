@@ -7,59 +7,90 @@ using System;
 
 public class Page_Bag : UIBase
 {
-    [SerializeField]
-    public RectTransform rect;
+    public RectTransform rectTran;
 
     public Transform transPage;
 
-    [SerializeField]
     private Button[] buttonArray;
 
-    [SerializeField]
     private GridLayoutGroup grid;
 
     private int currentItemNum;
 
     private void Start()
     {
+        //Todo: 查找物体
+
+        //Todo: 按钮添加监听事件
+
+        //Todo: 读取资源
         transPage = this.gameObject.transform.Find("Canvas/TransPage");
         if (transPage == null)
         {
             Debug.Log("Can't find transPage");
         }
-        rect = this.gameObject.transform.Find("Canvas/Scroll View/Viewport/Content").GetComponent<RectTransform>();
-        grid = rect.GetComponent<GridLayoutGroup>();
+        rectTran = this.gameObject.transform.Find("Canvas/Scroll View/Viewport/Content").GetComponent<RectTransform>();
+        grid = rectTran.GetComponent<GridLayoutGroup>();
 
         buttonArray = this.gameObject.transform.Find("Canvas/Buttons/").GetComponentsInChildren<Button>();
 
-        SetEventTrigger(buttonArray[0].gameObject).onClick = OnAddItemClick;
-        SetEventTrigger(buttonArray[1].gameObject).onClick = OnExitClick;
+        SetEventTrigger(buttonArray[0].gameObject).onClick = OnClosePageUI;
+        SetEventTrigger(buttonArray[1].gameObject).onClick = AddItem;
+        SetEventTrigger(buttonArray[2].gameObject).onClick = AddItem1;
+        SetEventTrigger(buttonArray[3].gameObject).onClick = AddItem2;
+
+        Init();
     }
 
-    private void OnAddItemClick()
+    private Com_Item CreatItem()
     {
-        // GameObject item = GameObject.Instantiate(this.item) as GameObject;
-        Com_Item item = UIManager.instance.CreatCom_item<Com_Item>(rect);
-        if (item == null)
-        {
-            Debug.Log("item is null");
-        }
-        if (rect != null)
-        {
-            Debug.Log("rect isn't null");
-            item.gameObject.transform.SetParent(rect);
-            Transform trans = item.transform.Find("Transform_darg");
-            trans.gameObject.AddComponent<DargItem>();
-        }
-        else
-        {
-            Debug.Log("Can't find item's parent");
-        }
+        var com_Item = UIManager.instance.CreatComUI<Com_Item>(rectTran);
+
         currentItemNum++;
         ChangeRectHight();
+        return com_Item;
     }
 
-    private void OnExitClick()
+    /// <summary>
+    /// 加载持久化数据
+    /// </summary>
+    private void Init()
+    {
+        foreach (var info in BagData.Instance.curItemDict)
+        {
+            for (int i = 0; i < info.Value.count; i++)
+            {
+                var item = CreatItem();
+                item.data = info.Value;
+            }
+        }
+    }
+
+    //Todo: 创建具体物体
+    private void AddItem()
+    {
+        var item = CreatItem();
+        item.data = BagData.Instance.curItemDict["0000"];
+        BagData.Instance.curItemDict["0000"].count++;
+    }
+
+    private void AddItem1()
+    {
+        var item = CreatItem();
+        item.data = BagData.Instance.curItemDict["0001"];
+        BagData.Instance.curItemDict["0001"].count++;
+    }
+
+    private void AddItem2()
+    {
+        var item = CreatItem();
+        item.data = BagData.Instance.curItemDict["0002"];
+        BagData.Instance.curItemDict["0002"].count++;
+    }
+
+    #region Old
+
+    private void OnClosePageUI()
     {
         UIManager.instance.ClosePageUI<Page_Bag>();
     }
@@ -69,11 +100,13 @@ public class Page_Bag : UIBase
         if (grid != null)
         {
             float itemHight = grid.spacing.y + grid.spacing.x;
-            rect.sizeDelta = new Vector2(0, itemHight * Mathf.Ceil((float)currentItemNum / grid.constraintCount));
+            rectTran.sizeDelta = new Vector2(0, itemHight * Mathf.Ceil((float)currentItemNum / grid.constraintCount));
         }
         else
         {
             Debug.Log("Can't find gird in rect");
         }
     }
+
+    #endregion Old
 }

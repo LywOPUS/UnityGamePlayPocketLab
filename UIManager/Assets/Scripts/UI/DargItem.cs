@@ -14,7 +14,7 @@ public class DargItem : UIBase
 
     private void Start()
     {
-        Destory = UIManager.instance.GetUiPage<Page_Bag>().transform.Find("Canvas/Destroy");
+        Destory = UIManager.instance.GetPageUI<Page_Bag>().transform.Find("Canvas/Destroy");
         if (Destory == null)
         {
             Debug.Log("Can't find Destoty");
@@ -30,8 +30,8 @@ public class DargItem : UIBase
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        currentParent.SetParent(UIManager.instance.GetUiPage<Page_Bag>().transPage);
-        Destory.SetParent(UIManager.instance.GetUiPage<Page_Bag>().transPage);
+        currentParent.SetParent(UIManager.instance.GetPageUI<Page_Bag>().transPage);
+        Destory.SetParent(UIManager.instance.GetPageUI<Page_Bag>().transPage);
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -50,16 +50,16 @@ public class DargItem : UIBase
     {
         if (eventData.pointerCurrentRaycast.gameObject != null && eventData.pointerCurrentRaycast.gameObject.name == "Destroy")
         {
-            //  currentParent.SetParent(UIManager.instance.GetUiPage<Page_Bag>().rect);
             Destroy(currentParent.gameObject);
+            BagData.Instance.curItemDict[this.gameObject.GetComponentInParent<Com_Item>().data.id].count--;
         }
         else
         {
             Debug.Log("Can't Find Destroy");
-            currentParent.SetParent(UIManager.instance.GetUiPage<Page_Bag>().rect);
+            currentParent.SetParent(UIManager.instance.GetPageUI<Page_Bag>().rectTran);
             gameObject.transform.localPosition = initPos;
-            // gameObject.transform.localPosition = initPos;
         }
+
         Destory.SetParent(DestoryCurrentParent);
     }
 

@@ -8,6 +8,7 @@ using System;
 public class EventTrigerLisner : MonoBehaviour, IPointerUpHandler, IDragHandler, IBeginDragHandler, IPointerClickHandler
 {
     public UnityAction onClick;
+    public UnityAction<string> onButtonsClick;
     public UnityAction<PointerEventData> onDrag;
     public UnityAction<PointerEventData> onBeginDrag;
     public UnityAction<PointerEventData> onPointerUp;
@@ -17,14 +18,6 @@ public class EventTrigerLisner : MonoBehaviour, IPointerUpHandler, IDragHandler,
         if (onBeginDrag != null)
         {
             onBeginDrag(eventData);
-        }
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if (onClick != null)
-        {
-            onClick();
         }
     }
 
@@ -41,6 +34,14 @@ public class EventTrigerLisner : MonoBehaviour, IPointerUpHandler, IDragHandler,
         if (onDrag != null)
         {
             onDrag(eventData);
+        }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (onClick != null)
+        {
+            onClick();
         }
     }
 }
