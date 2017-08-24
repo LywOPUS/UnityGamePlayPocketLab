@@ -37,7 +37,8 @@ public class EventTrigerLisner : MonoBehaviour, IPointerUpHandler, IDragHandler,
         }
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    public void OnPointerClick(PointerEventData eventData
+        )
     {
         if (onClick != null)
         {
