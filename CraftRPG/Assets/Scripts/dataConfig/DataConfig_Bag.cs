@@ -6,7 +6,5 @@ using UnityEngine;
 public class DataConfig_Bag
 {
     public readonly string id;
-    public readonly string itemName;
-    public readonly string spriteName;
-    public int count;
+    public readonly string DataConfig;
 }

@@ -6,8 +6,7 @@ using System.IO;
 public class ConfigUtil : MonoBehaviour
 {
     public static ConfigUtil Instance;
-
-    public Dictionary<string, DataConfig_Bag> bagConfig;
+    public Dictionary<string, DataConfig_Mineral> MineralConfig;
 
     public void Awake()
     {
@@ -16,8 +15,7 @@ public class ConfigUtil : MonoBehaviour
 
     public void Init()
     {
-        bagConfig = Load<DataConfig_Bag>();
-        ExportToJson<DataConfig_Bag>(bagConfig);
+        MineralConfig = Load<DataConfig_Mineral>();
     }
 
     /// <summary>
@@ -46,7 +44,7 @@ public class ConfigUtil : MonoBehaviour
             }
             str = textAsset.text;
         }
-
+        //Unity自带的Json解析 0o
         Dictionary<string, T> data = JsonUtility.FromJson<Dictionary<string, T>>(str);
         return data;
     }
