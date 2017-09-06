@@ -23,8 +23,6 @@ public class ConfigUtil : MonoBehaviour
     /// <summary>
     /// 导入数据
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
     private Dictionary<string, T> Load<T>() where T : class
     {
         string rSheetName = typeof(T).Name;
@@ -56,8 +54,6 @@ public class ConfigUtil : MonoBehaviour
     /// <summary>
     /// 导出数据
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="rData"></param>
     public void ExportToJson<T>(Dictionary<string, T> rData) where T : class
     {
         string rSheetName = typeof(T).Name;

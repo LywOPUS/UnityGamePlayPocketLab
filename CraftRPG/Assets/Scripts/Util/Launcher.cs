@@ -25,7 +25,7 @@ public class Launcher : MonoBehaviour
     /// </summary>
     private void PreLoadRes()
     {
-        Debug.Log("加载资源");
+        ConfigUtil.Instance.Init();
     }
 
     /// <summary>
