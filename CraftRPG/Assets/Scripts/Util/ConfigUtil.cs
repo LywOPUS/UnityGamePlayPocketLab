@@ -5,6 +5,7 @@ using System.IO;
 
 public class ConfigUtil : MonoBehaviour
 {
+   
     public static ConfigUtil Instance;
     public Dictionary<string, DataConfig_Mineral> MineralConfig;
 
@@ -18,15 +19,19 @@ public class ConfigUtil : MonoBehaviour
         MineralConfig = Load<DataConfig_Mineral>();
     }
 
+#region 表导入导出
     /// <summary>
     /// 导入数据
     /// </summary>
     private Dictionary<string, T> Load<T>() where T : class
     {
+        //寻找文本
         string rSheetName = typeof(T).Name;
         string readFilePath = Application.persistentDataPath + "/" + rSheetName + ".txt";
 
         string str;
+
+        //读取文本
         if (File.Exists(readFilePath))
         {
             StreamReader textData = File.OpenText(readFilePath);
@@ -44,7 +49,7 @@ public class ConfigUtil : MonoBehaviour
             }
             str = textAsset.text;
         }
-        //Unity自带的Json解析 0o
+        //Unity自带的Json解析
         Dictionary<string, T> data = JsonUtility.FromJson<Dictionary<string, T>>(str);
         return data;
     }
@@ -68,4 +73,5 @@ public class ConfigUtil : MonoBehaviour
         fs.Flush();
         fs.Close();
     }
+#endregion
 }
