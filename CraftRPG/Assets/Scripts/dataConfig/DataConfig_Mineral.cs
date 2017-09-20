@@ -8,6 +8,6 @@ public class DataConfig_Mineral
     public readonly string id;
     public readonly string name;
     public readonly string spriteName;
-    public readonly float attack;
-    public readonly float speed;
+    public int atack;
+    public int durability;
 }
